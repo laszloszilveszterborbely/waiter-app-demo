@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Előrendelés</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h2>Előrendelés</h2>
+    <form th:action="@{/preorder/create}" th:object="${preOrder}" method="post">
+        <label for="customerName">Név:</label>
+        <input type="text" id="customerName" th:field="*{customerName}" required/><br>
+        <label for="phoneNumber">Telefonszám:</label>
+        <input type="number" id="phoneNumber" th:field="*{phoneNumber}" required/><br>
+        <label for="date">Dátum:</label>
+        <input type="date" id="date" th:field="*{date}" required/><br>
+        <label for="time">Kiszállítás/Átvétel időpontja:</label>
+        <input type="time" id="time" th:field="*{time}" required/><br>
+        <label for="address">Kiszállítási cím: (Ha ELVITELRE rendelt, ezt a mezőt hagyd ÜRESEN!)</label>
+        <input type="text" id="address" th:field="*{address}"/><br>
+        <label for="notes">Megjegyzés:</label>
+        <input type="text" id="notes" th:field="*{notes}" required/><br>
+        <label for="courses">Rendelés:</label>
+        <input type="text" id="courses" th:field="*{courses}" required/><br>
+        <label for="paymentMethod">Fizetési mód:</label>
+        <input type="text" id="paymentMethod" th:field="*{paymentMethod}" required/><br>
+        <label for="monogram">Rögzítette:</label>
+		<input type="text" id="monogram" name="monogram" required /><br>
+        <button type="submit">Mentés</button>
+    </form>
+</body>
+</html>

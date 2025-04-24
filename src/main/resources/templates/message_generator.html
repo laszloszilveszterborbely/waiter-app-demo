@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="hu">
+	<head>
+		<meta charset="UTF-8">
+		<title>Üzenet Generátor</title>
+		<link rel="stylesheet" href="style.css">
+		<script>
+        	function generateMessage(type) {
+				const originalText = document.getElementById("originalText").value;
+				const openingHours = document.getElementById("openingHours").checked;
+				const haccpInfo = document.getElementById("haccpInfo").checked;
+				const subjectText = (type === 'accept') 
+					? "Asztalfoglalás megerősítése" 
+					: "Asztalfoglalás elutasítása";
+				document.getElementById("messageSubject").value = subjectText;
+
+				fetch(`http://localhost:8080/message_generator/${type}`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ originalText, openingHours, haccpInfo })
+					})
+					.then(response => response.text())
+					.then(data => {document.getElementById("generatedText").value = data
+						if (type === 'accept') {
+							alert("Foglalás mentve az adatbázisba.");
+						}
+					})
+					.catch(error => console.error("Hiba:", error));
+					}
+		</script>
+	</head>
+	<body>
+		<h1>Üzenet Generátor</h1>
+			<textarea id="originalText" placeholder="Másold be az email szövegét"></textarea>
+		<br>
+		
+		<input type="checkbox" id="openingHours"> Tájékoztatás a nyitvatartásról
+		<input type="checkbox" id="haccpInfo"> Tájékoztatás a HACCP-ről
+		<br>
+		
+		<button onclick="generateMessage('accept')">Foglalás ELFOGADÁSA</button>
+		<button onclick="generateMessage('reject')">Foglalás ELUTASÍTÁSA</button>
+		<br>
+		
+		<h3>Generált válaszüzenet:</h3>
+			<input id="messageSubject" type="text" readonly>
+			<textarea id="generatedText" readonly></textarea>
+		<button class="back-button" onclick="history.back()">Vissza</button>
+
+</body>
+</html>

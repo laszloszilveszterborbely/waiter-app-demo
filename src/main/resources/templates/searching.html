@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Keresés</title>
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<h1>Keresés</h1>
+		<form th:action="@{/searching}" method="post">
+			<label for="type">Keresés típusa:</label>
+			<select id="type" name="type">
+				<option value="both">Mindkettő</option>
+				<option value="reservation">Foglalás</option>
+				<option value="preorder">Előrendelés</option>
+			</select>
+			
+			<label for="start">Kezdő dátum:</label>
+			<input type="date" id="start" name="start">
+			
+			<label for="end">Záró dátum:</label>
+			<input type="date" id="end" name="end">
+			
+			<label for="name">Név:</label>
+			<input type="text" id="name" name="name">
+			
+			<label for="phoneNumber">Telefonszám:</label>
+			<input type="text" id="phoneNumber" name="phoneNumber" pattern="[0-9]*">
+			
+			<button type="submit">Keresés</button>
+			
+			<a class="back-button" href="/">Vissza</a><br>
+		</form>
+
+		<hr />
+	
+		<div class="container" th:if="${(reservations != null) && (preorders != null) }">
+			<div class="column">
+				<h3>Asztalfoglalások</h3>
+				<div class="tile" 
+					th:each="reservation : ${reservations}" 
+					th:classappend="${reservation.isActive} == true ? 'tile-active' : 'tile-inactive'"
+					th:onclick="|location.href='/reservation/${reservation.id}'|">
+					
+					<h4 th:text="${reservation.date}"></h4>
+					<h4 th:text="${reservation.time}"></h4>
+					<p th:text="${reservation.name}"></p>
+					
+					<div th:if="${reservation.isActive}">
+						<p th:text="${reservation.numberOfPeople} + ' fő'" class="highlight"></p>
+						<p th:text="'Rendezvény jellege: ' + ${reservation.occasion}"></p>
+					</div>
+					
+					<div th:if="${!reservation.isActive}">
+						<p class="warning-text">Ez a foglalás törölve lett.</p>
+					</div>
+					
+					<p th:if="${#lists.isEmpty(reservations)}">Nincs találat.</p>
+				</div>
+			</div>
+	
+			<div class="column">
+				<h3>Előrendelések</h3>
+				<div class="tile" 
+					th:each="preOrder : ${preorders}"
+					th:classappend="${preOrder.isActive} == true ? 'tile-active' : 'tile-inactive'"
+					th:onclick="|location.href='/preorder/${preOrder.id}'|">
+					
+					<h4 th:text="${preOrder.date}"></h4>
+					<h4 th:text="${preOrder.time}"></h4>
+					<p th:text="${preOrder.customerName}"></p>
+					
+					<div th:if="${preOrder.isActive}">
+						<p th:text="'Tételek száma: ' + ${preOrder.numberOfCourses}"></p>
+					</div>
+					
+					<div th:if="${!preOrder.isActive}">
+						<p class="warning-text">Ez az előrendelés törölve lett.</p>
+					</div>
+					
+					<p th:if="${#lists.isEmpty(preorders)}">Nincs találat.</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

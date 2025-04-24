@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Előrendelés részletei</title>
+    <link rel="stylesheet" href="/style.css">
+     <script>
+        function printPreOrder(preorderId) {
+            fetch(`/preorder/${preorderId}/print`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Hiba történt a nyomtatási adatok lekérése közben.");
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    // Nyomtatási párbeszédablak megnyitása
+                    const printWindow = window.open("", "_blank");
+                    printWindow.document.write("<pre>" + data + "</pre>");
+                    printWindow.document.close();
+                    printWindow.focus();
+                    printWindow.print();
+                    printWindow.close();
+                })
+                .catch(error => {
+                    alert("Hiba: " + error.message);
+                });
+        }
+	</script>
+</head>
+<body>
+    <h2>Előrendelés részletei</h2>
+    <div class="details" id="preorder-details">
+    <p th:text="'Dátum: ' + ${preOrder.date}"></p>
+    <p th:text="'Időpont: ' + ${preOrder.time}"></p>
+    <p th:text="'Név: ' + ${preOrder.customerName}"></p>
+    <p th:text="'Telefonszám: ' + ${preOrder.phoneNumber}"></p>
+    <p th:text="'Cím: ' + (${preOrder.isDeliver} ? ${preOrder.address} : 'Elvitel')"></p>
+    <p th:text="'Fizetési mód: ' + ${preOrder.paymentMethod}"></p>
+    <p th:text="'Étel: ' + ${preOrder.courses}"></p>
+    <p th:text="'Megjegyzések: ' + ${preOrder.notes}"></p>
+    
+	<div th:if="${preOrder.isActive}">
+	    <button th:onclick="|printPreOrder(${preOrder.id})|">Nyomtatás</button>
+		<button th:onclick="|window.location.href='/preorder/${preOrder.id}/edit'|">Módosítás</button>
+    	<button th:onclick="|window.location.href='/preorder/${preOrder.id}/cancel'|">Előrendelés törlése</button>
+	</div>
+		<button th:onclick="|window.location.href='/preorder/${preOrder.id}/modifyinglogs'|">Módosítási napló</button>        
+		<button class="back-button" onclick="history.back()">Vissza</button>
+    </div>
+</body>
+</html>

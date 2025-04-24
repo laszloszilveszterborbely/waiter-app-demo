@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<title>Asztalfoglalás törlése</title>
+	<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+	<h2>Asztalfoglalás törlése</h2>
+		<form th:action="@{/reservation/{id}/cancel(id=${reservation.id})}" th:object="${modifyingLog}" method="post">
+			<label for="monogram">Pincér monogramja:</label>
+			<input type="text" id="monogram" th:field="*{monogram}" required/><br>
+
+			<input type="hidden" th:name="event" th:value="'törlés'" />
+			
+			<label for="reason">Indok:</label>
+			<input type="text" id="reason" th:field="*{reason}" required/><br>
+			
+			<button type="submit">Asztalfogalás törlése</button>
+			
+			<button class="back-button" onclick="history.back()">Vissza</button>
+		</form>
+</body>
+</html>

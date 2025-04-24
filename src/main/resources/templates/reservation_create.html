@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Asztalfoglalás</title>
+		<link rel="stylesheet" href="/style.css">
+	</head>
+	<body>
+		<h2>Asztalfoglalás</h2>
+		<form th:action="@{/reservation/create}" th:object="${reservation}" method="post">
+			<label for="name">Név:</label> 
+			<input type="text" id="name" th:field="*{name}" required /><br>
+			 
+			<label for="phoneNumber">Telefonszám:</label>
+			<input type="number" id="phoneNumber" th:field="*{phoneNumber}"	required /><br> 
+			
+			<label for="numberOfPeople">Létszám:</label> 
+			<input type="number" id="numberOfPeople" th:field="*{numberOfPeople}" required /><br> 
+			
+			<label for="date">Dátum:</label> 
+			<input type="date" id="date" th:field="*{date}" required /><br> 
+			
+			<label for="time">Érkezés időpontja:</label> 
+			<input type="time" id="time" th:field="*{time}" required /><br> 
+			
+			<label for="occasion">Rendezvény jellege:</label> 
+			<input type="text" id="occasion" th:field="*{occasion}" required /><br> 
+			
+			<label for="isPayDeposit">Foglaló:</label>
+			<!-- 		<input type="hidden" name="isPayDeposit" value="false" /> -->
+			<input type="checkbox" id="isPayDeposit" th:field="*{isPayDeposit}" /><br>
+	
+			<label for="isOrderedMeal">Ételrendelés leadva:</label>
+			<!--        	<input type="hidden" name="isOrderedMeal" value="false" /> -->
+			<input type="checkbox" id="isOrderedMeal" th:field="*{isOrderedMeal}" /><br>
+	
+			<label for="needHighChair">Szükség lesz etetőszékre:</label> 
+			<input type="checkbox" id="needHighChair" th:field="*{needHighChair}" /><br>
+	
+			<label for="isThereCake">Hoz tortát:</label> 
+			<input type="checkbox" id="isThereCake" th:field="*{isThereCake}" /><br> 
+			
+			<label for="courses">Étel:</label> 
+			<input type="text" id="courses"	th:field="*{courses}" required /><br> 
+			
+			<label for="notes">Megjegyzés:</label>
+			<input type="text" id="notes" th:field="*{notes}" required /><br>
+			
+			<label for="tableNumber">Asztal:</label>
+			<input type="text" id="tableNumber" th:field="*{tableNumber}"/><br>
+			
+			<label for="monogram">Rögzítette:</label>
+			<input type="text" id="monogram" name="monogram" required /><br>
+			
+			<button type="submit">Mentés</button>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Előrendelés módosítása</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <form id="preorder-edit-form" th:action="@{/preorder/update}" method="post">
+        <input type="hidden" th:value="${preOrder.id}" name="id">
+		<label for="date">Dátum:</label>
+        <input type="date" id="date" name="date" th:value="${preOrder.date}">
+        <br>
+        <label for="time">Időpont:</label>
+        <input type="time" id="time" name="time" th:value="${preOrder.time}">
+        <br>
+        <label for="customerName">Név:</label>
+        <input type="text" id="customerName" name="customerName" th:value="${preOrder.customerName}">
+        <br>
+        <label for="phoneNumber">Telefonszám:</label>
+        <input type="number" id="phoneNumber" name="phoneNumber" th:value="${preOrder.phoneNumber}">
+        <br>
+        <label for="address">Kiszállítási cím: (Ha ELVITELRE rendelt, ezt a mezőt hagyd ÜRESEN!)</label>
+        <input type="text" id="address" name="address" th:value="${preOrder.address}">
+        <br>
+        <label for="notes">Megjegyzés:</label>
+        <input type="text" id="notes" name="notes" th:value="${preOrder.notes}">
+        <br>
+        <label for="courses">Étel:</label>
+        <input type="text" id="courses" name="courses" th:value="${preOrder.courses}">
+        <br>
+        <label for="paymentMethod">Fizetési mód:</label>
+        <input type="text" id="paymentMethod" name="paymentMethod" th:value="${preOrder.paymentMethod}">
+        <br>
+		<label for="monogram">Rögzítette:</label>
+		<input type="text" id="monogram" name="monogram" required />
+		<br>
+		
+        <button type="submit">Mentés</button>
+        <button onclick="history.back()">Vissza</button>
+    </form>
+</body>
+</html>

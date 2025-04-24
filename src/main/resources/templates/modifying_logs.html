@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Módosítási napló</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+	<h2>Módosítási napló</h2>
+
+	<div class="container" th:each="log : ${modifyingLogs}">
+		<p th:text="'Pincér: ' + ${log.monogram}"></p><br>
+		<p th:text="'Esemény: ' + ${log.event}"></p>
+		<p th:if="${log.event.equals('törlés')}" th:text="'Indoklás: ' + ${log.reason}"></p><br>
+		<p th:text="${log.timestamp}"></p>
+		<br> <br>
+	</div>
+
+	<button class="back-button" onclick="history.back()">Vissza</button>
+
+</body>
+</html>

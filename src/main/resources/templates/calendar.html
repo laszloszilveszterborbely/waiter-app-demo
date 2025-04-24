@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+	    <title>Találatok</title>
+		<link rel="stylesheet" href="style.css">
+		<script>
+			function printToCounter() {
+				let date = document.getElementById('printCounterBtn').getAttribute('data-selected-date');
+				if (!date) {
+					alert("Nincs kiválasztott dátum!");
+					return;
+					}
+				fetch(`/calendar/print_to_counter?date=${date}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error("Hiba történt a nyomtatási adatok lekérése közben.");
+						}
+						return response.text();
+					})
+					.then(data => {
+						const printWindow = window.open("", "_blank");
+						printWindow.document.write("<pre>" + data + "</pre>");
+						printWindow.document.close();
+						printWindow.focus();
+						printWindow.print();
+						printWindow.close();
+					})
+				.catch(error => {
+					alert("Hiba: " + error.message);
+				});
+			}
+	    </script>
+	    
+		<script>
+			function printToKitchen() {
+				let date = document.getElementById('printKitchenBtn').getAttribute('data-selected-date');
+				if (!date) {
+					alert("Nincs kiválasztott dátum!");
+					return;
+				}
+				fetch(`/calendar/print_to_kitchen?date=${date}`)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error("Hiba történt a nyomtatási adatok lekérése közben.");
+						}
+						return response.text();
+					})
+					.then(data => {
+						const printWindow = window.open("", "_blank");
+						printWindow.document.write("<pre>" + data + "</pre>");
+						printWindow.document.close();
+						printWindow.focus();
+						printWindow.print();
+						printWindow.close();
+					})
+				.catch(error => {
+					alert("Hiba: " + error.message);
+				});
+			}
+	    </script>    
+	</head>
+	<body>
+		<div class="datepickerheader">
+			<h2>Válasszon egy dátumot!</h2>
+			<form th:action="@{/calendar}" method="post">
+				<label for="date">Dátum:</label>
+				<input type="date" id="datepicker" name="date" class="datepicker" th:value="${selectedDate}" required>
+				<button type="submit">Keresés</button>
+			</form>
+		</div>
+	
+		<div class="container" th:if="${selectedDate != null}">
+	
+			<div class="column">
+				<h3>Asztalfoglalások</h3>
+				<div class="tile" th:each="reservation : ${reservations}" th:classappend="${reservation.isActive} == true ? 'tile-active' : 'tile-inactive'" th:onclick="|location.href='/reservation/${reservation.id}'|"> 
+					<h4 th:text="${reservation.time}"></h4>
+					<p th:text="${reservation.name}"></p>
+					<div th:if="${reservation.isActive}">
+						<p th:text="${reservation.numberOfPeople} + ' fő'" class="highlight"></p>
+						<p th:text="'Rendezvény jellege: ' + ${reservation.occasion}"></p>
+						<p th:if="${reservation.isOrderedMeal}">Ételrendelés leadva</p>
+						<p th:if="${reservation.isPayDeposit}">Foglaló fizetve</p>
+						<p th:if="${reservation.needHighChair}">Etetőszék</p>
+						<p th:if="${reservation.isThereCake}">Torta</p>
+						<p th:text="'Asztal: ' + ${reservation.tableNumber}"></p>
+					</div>
+					<div th:if="${!reservation.isActive}">
+						<p class="warning-text">Ez a foglalás törölve lett.</p>
+					</div>
+				</div>
+			</div>
+	
+			<div class="column">
+				<h3>Előrendelések</h3>
+				<div class="tile" th:each="preOrder : ${preOrders}" th:classappend="${preOrder.isActive} == true ? 'tile-active' : 'tile-inactive'" th:onclick="|location.href='/preorder/${preOrder.id}'|">
+					<h4 th:text="${preOrder.time}"></h4>
+					<p th:text="${preOrder.customerName}"></p>
+					<div th:if="${preOrder.isActive}">
+						<p th:text="'Tételek száma: ' + ${preOrder.numberOfCourses}"></p>
+						<p th:if="${preOrder.isDeliver}" th:text="'Cím: ' + ${preOrder.address}" class="highlight"></p>
+						<p th:if="!${preOrder.isDeliver}" class="highlight">Elvitel</p>
+					</div>
+					<div th:if="${!preOrder.isActive}">
+						<p class="warning-text">Ez az előrendelés törölve lett.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+				    
+		<div th:if="${selectedDate != null}" style="margin-top: 20px;">
+			<button id="printCounterBtn" th:data-selected-date="${selectedDate}" onclick="printToCounter()">Nyomtatás a pultnak</button>
+			<button id="printKitchenBtn" th:data-selected-date="${selectedDate}" onclick="printToKitchen()">Nyomtatás a konyhának</button>
+		</div>
+			<button class="back-button" onclick="history.back()">Vissza</button>
+	</body>
+</html>

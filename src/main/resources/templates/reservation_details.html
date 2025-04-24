@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+	    <title>Asztalfoglalás részletei</title>
+	    <link rel="stylesheet" href="/style.css">
+	    <script>
+	        function printReservation(reservationId) {
+	            fetch(`/reservation/${reservationId}/print`)
+	                .then(response => {
+	                    if (!response.ok) {
+	                        throw new Error("Hiba történt a nyomtatási adatok lekérése közben.");
+	                    }
+	                    return response.text();
+	                })
+	                .then(data => {
+	                    // Nyomtatási párbeszédablak megnyitása
+	                    const printWindow = window.open("", "_blank");
+	                    printWindow.document.write("<pre>" + data + "</pre>");
+	                    printWindow.document.close();
+	                    printWindow.focus();
+	                    printWindow.print();
+	                    printWindow.close();
+	                })
+	                .catch(error => {
+	                    alert("Hiba: " + error.message);
+	                });
+	        }
+	        
+	    </script>
+	</head>
+<body>
+    <h2>Asztalfoglalás részletei</h2>
+    <div class="details" id="reservation-details">
+    <p th:text="'Időpont: ' + ${reservation.time}"></p>
+    <p th:text="'Név: ' + ${reservation.name}"></p>
+    <p th:text="'Telefonszám: ' + ${reservation.phoneNumber}"></p>
+    <p th:text="'Létszám: ' + ${reservation.numberOfPeople}"></p>
+    <p th:text="'Rendezvény jellege: ' + ${reservation.occasion}"></p>
+    <p th:text="'Ételrendelés leadva: ' + (${reservation.isOrderedMeal} ? 'Igen' : 'Nem')"></p>
+    <p th:text="'Foglaló: ' + (${reservation.isPayDeposit} ? 'Fizetve' : 'Nincs fizetve')"></p>
+    <p th:text="'Etetőszék: ' + (${reservation.needHighChair} ? 'Igen' : 'Nem')"></p>
+    <p th:text="'Torta: ' + (${reservation.isThereCake} ? 'Van' : 'Nincs')"></p>
+    <p th:text="'Étel: ' + ${reservation.courses}"></p>
+    <p th:text="'Megjegyzések: ' + ${reservation.notes}"></p>
+    <p th:text="'Asztal: ' + ${reservation.tableNumber}"></p>
+
+	<div th:if="${reservation.isActive}">
+	    <button th:onclick="|printReservation(${reservation.id})|">Nyomtatás</button>
+		<button th:onclick="|window.location.href='/reservation/${reservation.id}/edit'|">Módosítás</button>
+    	<button th:onclick="|window.location.href='/reservation/${reservation.id}/cancel'|">Asztalfoglalás törlése</button>
+	</div>
+    	<button th:onclick="|window.location.href='/reservation/${reservation.id}/modifyinglogs'|">Módosítási napló</button>
+    	<button class="back-button" onclick="history.back()">Vissza</button>
+    </div>
+</body>
+</html>
