@@ -9,6 +9,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+/**
+ * This class represents a log entry that records changes made to a reservation or pre-order.
+ * 
+ * Each log contains:
+ * - the staff member's monogram who made the change,
+ * - the type of event (e.g. create, update, cancel),
+ * - an optional reason (mainly for cancellations),
+ * - and a timestamp.
+ * 
+ * A log entry is always linked to either a reservation or a pre-order.
+ */
 @Entity
 public class ModifyingLog {
 

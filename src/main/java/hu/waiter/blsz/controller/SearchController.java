@@ -17,6 +17,14 @@ import hu.waiter.blsz.service.PreOrderService;
 import hu.waiter.blsz.service.ReservationService;
 
 
+/**
+ * This controller handles the search function.
+ * 
+ * Features:
+ * - Allows searching reservations and pre-orders by multiple criteria (date range, name, phone number).
+ * - Supports filtering by entity type (reservation, pre-order, or both).
+ * - Displays search results on the search page.
+ */
 @Controller
 @RequestMapping("/searching")
 public class SearchController {
@@ -27,14 +35,43 @@ public class SearchController {
 	PreOrderService preOrderService;
 	
 	
+	/**
+	 * GET request to open search page.
+	 * 
+	 * @return the search view.
+	 */
 	@GetMapping
 	public String goToSearch() {
 		return "searching";
 	}
 	
-	
+	/**
+	 * POST request to search for reservations or pre-orders.
+     * 
+     * Filters results by the given parameters:
+     * - Type: reservation, pre-order, or both
+     * - Date range: start and end
+     * - Customer name
+     * - Phone number
+     * 
+     * Results are added to the model and displayed on the search page.
+     * 
+	 * @param type search target ("reservation", "preorder", "both")
+	 * @param start start date (optional)
+	 * @param end end date (optional)
+	 * @param name customer name (optional)
+	 * @param phoneNumber customer phone number (optional)
+	 * @param model the Thymeleaf model to pass results to the view.
+	 * @return the same search view with the filled results.
+	 */
 	@PostMapping
-		public String search(@RequestParam(required = false) String type, @RequestParam(required = false) LocalDate start, @RequestParam(required = false) LocalDate end, @RequestParam(required = false) String name, @RequestParam(required = false) Long phoneNumber, Map<String, Object> model) {
+		public String search(
+				@RequestParam(required = false) String type, 
+				@RequestParam(required = false) LocalDate start, 
+				@RequestParam(required = false) LocalDate end, 
+				@RequestParam(required = false) String name, 
+				@RequestParam(required = false) Long phoneNumber, 
+				Map<String, Object> model) {
 
         if (type == null || type.equals("both") || type.equals("reservation")) {
             List<Reservation> reservations = reservationService.findReservationByExample(start, end, name, phoneNumber);

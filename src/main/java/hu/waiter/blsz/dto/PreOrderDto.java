@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Data Transfer Object (DTO) for representing pre-order data in views and forms.
+ * 
+ * This DTO mirrors the PreOrder entity structure.
+ */
 public class PreOrderDto extends RestaurantEntityDto {
 
 	private Long id;

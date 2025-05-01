@@ -13,6 +13,13 @@ import org.springframework.util.StringUtils;
 import hu.waiter.blsz.model.PreOrder;
 import hu.waiter.blsz.repository.PreOrderRepository;
 
+/**
+ * This service handles pre-order-related operations.
+ * 
+ * Features:
+ * - Saving, updating, and finding pre-orders.
+ * - Searching pre-orders by date or multiple criteria (name, phone number, date range).
+ */
 @Service
 public class PreOrderService {
 	

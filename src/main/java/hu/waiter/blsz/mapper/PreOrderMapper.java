@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import hu.waiter.blsz.dto.PreOrderDto;
 import hu.waiter.blsz.model.PreOrder;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = ModifyingLogMapper.class)
 public interface PreOrderMapper {
 	
 	public PreOrderDto preOrderToDto(PreOrder preOrder);
@@ -16,6 +16,6 @@ public interface PreOrderMapper {
 	
 	public PreOrder dtoToPreOrder(PreOrderDto preOrderDto);
 	
-	public List<PreOrder> dtosTPreOrders(List<PreOrderDto> preOrderDtos);
+	public List<PreOrder> dtosToPreOrders(List<PreOrderDto> preOrderDtos);
 
 }

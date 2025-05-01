@@ -13,6 +13,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+/**
+ * This class represents a table reservation.
+ * 
+ * Features:
+ * - Stores all relevant data about a reservation.
+ * - Supports modification logging.
+ * - Provides formatted print views for kitchen or counter staff use.
+ * 
+ * Usage:
+ * Reservations can be manually created or generated from online forms. Staff can view, modify, cancel, or print them. 
+ * The print format is adapted for a 30-character-wide thermal receipt printer.
+ * Inactive reservations are skipped when generating printed output.
+ */
 @Entity
 public class Reservation extends RestaurantEntity {
 	@Id
@@ -261,6 +274,16 @@ public class Reservation extends RestaurantEntity {
 		return Objects.equals(id, other.id);
 	}
 
+	/**
+	 * Generates a printable string for kitchen staff.
+	 * 
+	 * Includes only reservations that are active and: 
+	 * - either have meal pre-orders,
+	 * - or involve 10 or more people (regardless of meal).
+	 * Displays basic informations.
+	 * 
+	 * The output format fits a 30-character-wide receipt printer.
+	 */
 	@Override
 	public String toKitchen() {
 		if (!isActive)
@@ -297,6 +320,14 @@ public class Reservation extends RestaurantEntity {
 		return builder.toString();
 	}
 
+	/**
+	 * Generates a printable string for counter staff.
+	 * 
+	 * Includes reservations that are active. 
+	 * Displays basic informations.
+	 * 
+	 * The output format fits a 30-character-wide receipt printer.
+	 */
 	public String toCounter() {
 		if (!isActive)
 			return "";
@@ -325,6 +356,14 @@ public class Reservation extends RestaurantEntity {
 		return builder.toString();
 	}
 
+	/**
+	 * Generates a printable string for full overview.
+	 * 
+	 * Includes reservations that are active. 
+	 * Displays all informations.
+	 * 
+	 * The output format fits a 30-character-wide receipt printer.
+	 */
 	public String toPrintAll() {
 		if (!isActive)
 			return "";
@@ -366,6 +405,15 @@ public class Reservation extends RestaurantEntity {
 		return builder.toString();
 	}
 
+	/**
+	 * Helper method that splits a longer string into lines of maximum width.
+	 * 
+	 * Used to ensure text fits the receipt printer width.
+	 * 
+	 * @param text the full string to wrap
+	 * @param maxWidth the maximum character per line
+	 * @return a list of wrapped text lines
+	 */
 	private List<String> wrapText(String text, int maxWidth) {
 		List<String> lines = new ArrayList<>();
 		int start = 0;

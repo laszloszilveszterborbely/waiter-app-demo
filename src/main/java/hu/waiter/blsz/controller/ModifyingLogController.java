@@ -16,6 +16,12 @@ import hu.waiter.blsz.mapper.ModifyingLogMapper;
 import hu.waiter.blsz.model.ModifyingLog;
 import hu.waiter.blsz.service.ModifyingLogService;
 
+/**
+ * This controller displays modifying logs.
+ * 
+ * Features:
+ * - Showing modification history for reservations and pre-orders.
+ */
 @Controller
 @RequestMapping("/")
 public class ModifyingLogController {
@@ -23,6 +29,14 @@ public class ModifyingLogController {
 	@Autowired
 	private ModifyingLogService modifyingLogService;
 	
+	
+	/**
+	 * GET request to show the modification history of a specific reservation.
+	 * 
+	 * @param id the reservation ID.
+	 * @param model the Thymeleaf model to populate.
+	 * @return the modifying logs view.
+	 */
 	@GetMapping("/reservation/{id}/modifyinglogs")
 	public String showReservationModifyingLogs(@PathVariable Long id, Map<String, Object> model) {
 		List<ModifyingLog> modifyingLogs = modifyingLogService.findByReservationId(id);
@@ -32,6 +46,13 @@ public class ModifyingLogController {
 		return "modifying_logs";
 	}
 	
+	/**
+	 * GET request to show the modification history of a specific pre-order. 
+	 * 
+	 * @param id the pre-order ID.
+	 * @param model the Thymeleaf model to populate.
+	 * @return the modifying logs view.
+	 */
 	@GetMapping("/preorder/{id}/modifyinglogs")
 	public String showPreOrderModifyingLogs(@PathVariable Long id, Map<String, Object> model) {
 		List<ModifyingLog> modifyingLogs = modifyingLogService.findByPreOrderId(id);

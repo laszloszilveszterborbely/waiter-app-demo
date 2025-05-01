@@ -22,6 +22,15 @@ import hu.waiter.blsz.model.ModifyingLog;
 import hu.waiter.blsz.model.PreOrder;
 import hu.waiter.blsz.service.PreOrderService;
 
+
+/**
+ * This controller manages pre-orders.
+ * 
+ * Features:
+ * - Creating, editing, and cancelling pre-orders.
+ * - Displaying and printing pre-order details.
+ * - Recording modification logs for changes.
+ */
 @Controller
 @RequestMapping("/preorder")
 public class PreOrderController {
@@ -34,13 +43,27 @@ public class PreOrderController {
 	private ModifyingLogMapper modifyingLogMapper;
 
 	
+	/**
+	 * GET request to open the pre-order creation page.
+	 * 
+	 * @param model the Thymeleaf model to populate with an empty PreOrderDto.
+	 * @return the pre-order creation form view.
+	 */
     @GetMapping("/create")
     public String preorderForm(Map<String, Object> model) {
         model.put("preOrder", new PreOrderDto());
         return "preorder_create";
     }
     
-
+	/**
+	 * POST request to save a new pre-order into the database.
+	 * 
+	 * Adds a log entry for creation.
+	 * 
+	 * @param preOrderDto the filled pre-order data from the form.
+	 * @param monogram the monogram of the staff member who created the pre-order.
+	 * @return view that closes the form page.
+	 */
     @PostMapping("/create")
     public String savePreOrder(@ModelAttribute PreOrderDto preOrderDto, @RequestParam String monogram) {
     	ModifyingLog modifyingLog = new ModifyingLog(monogram, "létrehozás");
@@ -55,6 +78,13 @@ public class PreOrderController {
     }
     
     
+	/**
+	 * GET request to show the details of a specific pre-order.
+	 * 
+	 * @param id the pre-order ID.
+	 * @param model the Thymeleaf model to populate.
+	 * @return the pre-order details view.
+	 */
     @GetMapping("/{id}")
     public String showPreOrderDetails(@PathVariable Long id, Map<String, Object> model) {
         PreOrder preOrder = preOrderService.findById(id);
@@ -65,6 +95,13 @@ public class PreOrderController {
     }
     
     
+	/**
+	 * GET request to open the edit page for a specific pre-order.
+	 * 
+	 * @param id the pre-order ID.
+	 * @param model the Thymeleaf model to populate with the pre-order data.
+	 * @return the pre-order editing form view.
+	 */
     @GetMapping("/{id}/edit")
     public String showPreOrderEditor(@PathVariable Long id, Map<String, Object> model) {
     	PreOrder preOrder = preOrderService.findById(id);
@@ -75,6 +112,12 @@ public class PreOrderController {
     }
     
     
+	/**
+	 * GET request to generate a printable version of the pre-order details.
+	 * 
+	 * @param id the pre-order ID.
+	 * @return a text representation of the pre-order (formatted for printing).
+	 */
     @GetMapping("/{id}/print")
     @ResponseBody
     public String printPreOrder(@PathVariable Long id) {
@@ -85,6 +128,15 @@ public class PreOrderController {
     }
     
     
+	/**
+	 * POST request to update an existing pre-order.
+	 * 
+	 * Adds a log entry for modification.
+	 * 
+	 * @param preOrderDto the updated pre-order data.
+	 * @param monogram the monogram of the staff member who modified the pre-order.
+	 * @return redirects to the home page after saving.
+	 */
     @PostMapping("/update")
     public String updatePreOrder(@ModelAttribute PreOrderDto preOrderDto, @RequestParam String monogram) {
     	PreOrder preOrder = preOrderMapper.dtoToPreOrder(preOrderDto);
@@ -110,6 +162,13 @@ public class PreOrderController {
     }
     
     
+	/**
+	 * GET request to open the cancel pre-order page.
+	 * 
+	 * @param id the pre-order ID.
+	 * @param model the Thymeleaf model to populate.
+	 * @return the pre-order cancel form view.
+	 */
     @GetMapping("/{id}/cancel")
     public String showCancelPreOrder(@PathVariable Long id, Map<String, Object> model) {
     	PreOrder preOrder = preOrderService.findById(id);
@@ -120,6 +179,15 @@ public class PreOrderController {
     	return "preorder_cancel";
     }
     
+	/**
+	 * POST request to cancel a pre-order by marking it inactive.
+	 * 
+	 * Adds a log entry for cancellation.
+	 * 
+	 * @param id the pre-order ID.
+	 * @param modifyingLogDto the cancellation reason and staff member monogram.
+	 * @return redirects to the home page after canceling.
+	 */
     @PostMapping("/{id}/cancel")
     public String cancelPreOrder(@PathVariable Long id, @ModelAttribute ModifyingLogDto modifyingLogDto) {
     	modifyingLogDto.setId(null);

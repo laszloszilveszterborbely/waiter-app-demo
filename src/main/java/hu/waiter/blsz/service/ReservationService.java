@@ -13,6 +13,13 @@ import org.springframework.util.StringUtils;
 import hu.waiter.blsz.model.Reservation;
 import hu.waiter.blsz.repository.ReservationRepository;
 
+/**
+ * This service handles reservation-related operations.
+ * 
+ * Features:
+ * - Saving, updating, and finding reservations.
+ * - Searching reservations by date or multiple criteria (name, phone number, date range).
+ */
 @Service
 public class ReservationService {
 	

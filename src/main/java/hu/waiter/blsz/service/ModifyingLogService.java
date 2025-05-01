@@ -8,6 +8,13 @@ import org.springframework.stereotype.Service;
 import hu.waiter.blsz.model.ModifyingLog;
 import hu.waiter.blsz.repository.ModifyingLogRepository;
 
+/**
+ * This service handles modifying logs.
+ * 
+ * Features:
+ * - Return logs related to reservations or pre-orders.
+ * - Delegates database operations to the repository.
+ */
 @Service
 public class ModifyingLogService {
 	

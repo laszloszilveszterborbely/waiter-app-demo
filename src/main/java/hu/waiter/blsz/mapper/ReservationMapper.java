@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import hu.waiter.blsz.dto.ReservationDto;
 import hu.waiter.blsz.model.Reservation;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = ModifyingLogMapper.class)
 public interface ReservationMapper {
 	
 	public ReservationDto reservationToDto(Reservation reservation);

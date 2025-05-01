@@ -13,6 +13,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+/**
+ * This class represents a meal pre-order.
+ * 
+ * Features:
+ * - Stores all relevant data about a pre-order.
+ * - Supports modification logging.
+ * - Provides formatted print views for kitchen staff use.
+ * 
+ *  * Usage:
+ * Pre-orders are used when the guest orders food in advance, optionally requesting delivery.
+ * The print format is adapted for a 30-character-wide thermal receipt printer.
+ * Inactive pre-orders are skipped when generating printed output.
+ */
 @Entity
 public class PreOrder extends RestaurantEntity {
 
@@ -193,6 +206,14 @@ public class PreOrder extends RestaurantEntity {
 		return Objects.equals(id, other.id);
 	}
 
+	/**
+	 * Generates a printable string for kitchen staff.
+	 * 
+	 * Includes only pre-orders that are active.
+	 * Displays basic informations.
+	 * 
+	 * The output format fits a 30-character-wide receipt printer.
+	 */
 	@Override
 	public String toKitchen() {
 		if (!isActive)
@@ -222,6 +243,15 @@ public class PreOrder extends RestaurantEntity {
 		return builder.toString();
 	}
 
+	
+	/**
+	 * Generates a printable string for full overview.
+	 * 
+	 * Includes reservations that are active. 
+	 * Displays all informations.
+	 * 
+	 * The output format fits a 30-character-wide receipt printer.
+	 */
 	public String toPrintAll() {
 		if (!isActive)
 			return "";
@@ -252,6 +282,15 @@ public class PreOrder extends RestaurantEntity {
 		return builder.toString();
 	}
 
+	/**
+	 * Helper method that splits a longer string into lines of maximum width.
+	 * 
+	 * Used to ensure text fits the receipt printer width.
+	 * 
+	 * @param text the full string to wrap
+	 * @param maxWidth the maximum character per line
+	 * @return a list of wrapped text lines
+	 */
 	private List<String> wrapText(String text, int maxWidth) {
 		List<String> lines = new ArrayList<>();
 		int start = 0;

@@ -2,6 +2,11 @@ package hu.waiter.blsz.dto;
 
 import java.time.LocalTime;
 
+/**
+ * Data Transfer Object (DTO) for representing restaurant-related entity data in views and forms.
+ * 
+ * This DTO mirrors the PreOrder entity structure.
+ */
 public class RestaurantEntityDto {
 
 	private LocalTime time;

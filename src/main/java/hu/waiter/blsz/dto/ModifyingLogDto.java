@@ -3,6 +3,11 @@ package hu.waiter.blsz.dto;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * Data Transfer Object (DTO) for representing modification log entry data in views and forms.
+ * 
+ * This DTO mirrors the ModifyingLog entity structure.
+ */
 public class ModifyingLogDto {
 
 	private Long id;

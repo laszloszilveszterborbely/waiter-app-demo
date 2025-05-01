@@ -10,6 +10,11 @@ import hu.waiter.blsz.model.ModifyingLog;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.OneToMany;
 
+/**
+ * Data Transfer Object (DTO) for representing reservation data in views and forms.
+ * 
+ * This DTO mirrors the Reservation entity structure.
+ */
 public class ReservationDto extends RestaurantEntityDto {
 
 	private Long id;
